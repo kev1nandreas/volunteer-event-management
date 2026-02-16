@@ -337,14 +337,14 @@
                 ]
             }
         },
-        "/api/user": {
+        "/api/me": {
             "get": {
                 "tags": [
                     "Authentication"
                 ],
                 "summary": "Get authenticated user profile",
                 "description": "Retrieve the profile of the authenticated user",
-                "operationId": "0db9b30cc555e4220e11cfdbd5be1686",
+                "operationId": "51491a6db5ac142d7476ebeb3c8abe80",
                 "responses": {
                     "200": {
                         "description": "User profile retrieved successfully",
