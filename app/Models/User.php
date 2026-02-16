@@ -47,4 +47,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * The events that belong to the user.
+     */
+    public function events()
+    {
+        return $this->belongsToMany(Event::class)->withTimestamps();
+    }
 }
