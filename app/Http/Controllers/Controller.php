@@ -6,17 +6,13 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use OpenApi\Attributes as OA;
 
 #[OA\Info(
-    title: 'OJAS Indonesia API', 
+    title: 'Volunteer Event Management API', 
     version: '1.0.0',
-    description: 'API Documentation for OJAS Indonesia Backend'
+    description: 'API Documentation for Volunteer Event Management System',
 )]
 #[OA\Server(
     url: 'http://localhost:8000',
     description: 'Local Development Server'
-)]
-#[OA\Server(
-    url: 'http://35.186.156.82:8000',
-    description: 'Staging Server'
 )]
 #[OA\SecurityScheme(
     securityScheme: 'bearerAuth',

@@ -1,1099 +1,1076 @@
 {
-  "openapi": "3.0.0",
-  "info": {
-    "title": "OJAS Indonesia API",
-    "description": "API Documentation for OJAS Indonesia Backend",
-    "version": "1.0.0"
-  },
-  "servers": [
-    {
-      "url": "http://localhost:8000",
-      "description": "Local Development Server"
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Volunteer Event Management API",
+        "description": "API Documentation for Volunteer Event Management System",
+        "version": "1.0.0"
     },
-    {
-      "url": "http://35.186.156.82:8000",
-      "description": "Staging Server"
-    }
-  ],
-  "paths": {
-    "/api/register": {
-      "post": {
-        "tags": [
-          "Authentication"
-        ],
-        "summary": "User registration",
-        "description": "Register a new user account",
-        "operationId": "f14881902273de9a96097bc3f0aae0b7",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "name",
-                  "email",
-                  "password",
-                  "password_confirmation"
-                ],
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "example": "John Doe"
-                  },
-                  "email": {
-                    "type": "string",
-                    "format": "email",
-                    "example": "user@example.com"
-                  },
-                  "password": {
-                    "type": "string",
-                    "format": "password",
-                    "minLength": 8,
-                    "example": "password123"
-                  },
-                  "password_confirmation": {
-                    "type": "string",
-                    "format": "password",
-                    "minLength": 8,
-                    "example": "password123"
-                  }
-                },
-                "type": "object"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Registration successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Registrasi berhasil"
-                    },
-                    "data": {
-                      "properties": {
-                        "token": {
-                          "type": "string",
-                          "example": "1|abcdef123456..."
-                        }
-                      },
-                      "type": "object"
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Validation failed"
-                    },
-                    "errors": {
-                      "type": "object"
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Registrasi gagal"
-                    },
-                    "error": {
-                      "type": "object"
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          }
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "Local Development Server"
         }
-      }
-    },
-    "/api/login": {
-      "post": {
-        "tags": [
-          "Authentication"
-        ],
-        "summary": "User login",
-        "description": "Authenticate user and return access token",
-        "operationId": "594ca3d408ad3621f1036811e302169d",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "email",
-                  "password"
-                ],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email",
-                    "example": "user@example.com"
-                  },
-                  "password": {
-                    "type": "string",
-                    "format": "password",
-                    "minLength": 8,
-                    "example": "password123"
-                  }
-                },
-                "type": "object"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Login successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Login berhasil"
-                    },
-                    "data": {
-                      "properties": {
-                        "token": {
-                          "type": "string",
-                          "example": "1|abcdef123456..."
-                        }
-                      },
-                      "type": "object"
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Invalid credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Kredensial yang diberikan tidak sesuai dengan catatan kami"
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Kredensial tidak valid"
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Login gagal"
-                    },
-                    "error": {
-                      "type": "object"
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/logout": {
-      "post": {
-        "tags": [
-          "Authentication"
-        ],
-        "summary": "User logout",
-        "description": "Logout user and revoke all tokens",
-        "operationId": "b04b4574154805526c00bfa85af76337",
-        "responses": {
-          "200": {
-            "description": "Logout successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Logout berhasil"
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthenticated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Unauthenticated"
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Logout gagal"
-                    },
-                    "error": {
-                      "type": "object"
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      }
-    },
-    "/api/me": {
-      "get": {
-        "tags": [
-          "Authentication"
-        ],
-        "summary": "Get authenticated user profile",
-        "description": "Retrieve the profile of the authenticated user",
-        "operationId": "51491a6db5ac142d7476ebeb3c8abe80",
-        "responses": {
-          "200": {
-            "description": "User profile retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "id": {
-                      "type": "integer",
-                      "example": 1
-                    },
-                    "name": {
-                      "type": "string",
-                      "example": "John Doe"
-                    },
-                    "email": {
-                      "type": "string",
-                      "example": "john.doe@example.com"
-                    },
-                    "email_verified_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "example": "2024-01-01T00:00:00.000000Z",
-                      "nullable": true
-                    },
-                    "created_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "example": "2024-01-01T00:00:00.000000Z"
-                    },
-                    "updated_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "example": "2024-01-01T00:00:00.000000Z"
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthenticated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Unauthenticated."
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      }
-    },
-    "/api/events": {
-      "get": {
-        "tags": [
-          "Events"
-        ],
-        "summary": "Get all events",
-        "description": "Retrieve a paginated list of all events with their participants",
-        "operationId": "36f737e1d90d458b5e9594583378ed58",
-        "parameters": [
-          {
-            "name": "per_page",
-            "in": "query",
-            "description": "Number of items per page",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 10,
-              "example": 10
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "description": "Page number",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 1,
-              "example": 1
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Events retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Events retrieved successfully"
-                    },
-                    "data": {
-                      "properties": {
-                        "current_page": {
-                          "type": "integer",
-                          "example": 1
-                        },
-                        "data": {
-                          "type": "array",
-                          "items": {
-                            "properties": {
-                              "id": {
-                                "type": "string",
-                                "example": "123e4567-e89b-12d3-a456-426614174000"
-                              },
-                              "title": {
-                                "type": "string",
-                                "example": "Community Cleanup Event"
-                              },
-                              "description": {
-                                "type": "string",
-                                "example": "Join us for a community cleanup event"
-                              },
-                              "event_date": {
-                                "type": "string",
-                                "format": "date-time",
-                                "example": "2026-03-15T10:00:00.000000Z"
-                              },
-                              "created_at": {
-                                "type": "string",
-                                "format": "date-time",
-                                "example": "2026-02-16T00:00:00.000000Z"
-                              },
-                              "updated_at": {
-                                "type": "string",
-                                "format": "date-time",
-                                "example": "2026-02-16T00:00:00.000000Z"
-                              },
-                              "users": {
-                                "type": "array",
-                                "items": {
-                                  "properties": {
-                                    "id": {
-                                      "type": "string",
-                                      "example": "9d4e8f12-3456-7890-abcd-ef1234567890"
-                                    },
+    ],
+    "paths": {
+        "/api/register": {
+            "post": {
+                "tags": ["Authentication"],
+                "summary": "User registration",
+                "description": "Register a new user account",
+                "operationId": "f14881902273de9a96097bc3f0aae0b7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
                                     "name": {
-                                      "type": "string",
-                                      "example": "John Doe"
+                                        "type": "string",
+                                        "example": "John Doe"
                                     },
                                     "email": {
-                                      "type": "string",
-                                      "example": "john@example.com"
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "minLength": 8,
+                                        "example": "password123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "minLength": 8,
+                                        "example": "password123"
                                     }
-                                  },
-                                  "type": "object"
-                                }
-                              }
-                            },
-                            "type": "object"
-                          }
-                        },
-                        "first_page_url": {
-                          "type": "string",
-                          "example": "http://localhost:8000/api/events?page=1"
-                        },
-                        "from": {
-                          "type": "integer",
-                          "example": 1
-                        },
-                        "last_page": {
-                          "type": "integer",
-                          "example": 10
-                        },
-                        "per_page": {
-                          "type": "integer",
-                          "example": 10
-                        },
-                        "to": {
-                          "type": "integer",
-                          "example": 10
-                        },
-                        "total": {
-                          "type": "integer",
-                          "example": 100
-                        }
-                      },
-                      "type": "object"
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthenticated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Unauthenticated."
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Failed to retrieve events"
-                    },
-                    "error": {
-                      "type": "object"
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      },
-      "post": {
-        "tags": [
-          "Events"
-        ],
-        "summary": "Create a new event",
-        "description": "Create a new event with title, description, and event date",
-        "operationId": "d31f001e93af9a511c02cbf217121d54",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "title",
-                  "description",
-                  "event_date"
-                ],
-                "properties": {
-                  "title": {
-                    "type": "string",
-                    "maxLength": 255,
-                    "example": "Community Cleanup Event"
-                  },
-                  "description": {
-                    "type": "string",
-                    "example": "Join us for a community cleanup event to make our neighborhood cleaner and greener"
-                  },
-                  "event_date": {
-                    "description": "Event date must be in the future",
-                    "type": "string",
-                    "format": "date-time",
-                    "example": "2026-03-15T10:00:00"
-                  }
-                },
-                "type": "object"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Event created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Event created successfully"
-                    },
-                    "data": {
-                      "properties": {
-                        "id": {
-                          "type": "string",
-                          "format": "uuid",
-                          "example": "123e4567-e89b-12d3-a456-426614174000"
-                        },
-                        "title": {
-                          "type": "string",
-                          "example": "Community Cleanup Event"
-                        },
-                        "description": {
-                          "type": "string",
-                          "example": "Join us for a community cleanup event"
-                        },
-                        "event_date": {
-                          "type": "string",
-                          "format": "date-time",
-                          "example": "2026-03-15T10:00:00.000000Z"
-                        },
-                        "created_at": {
-                          "type": "string",
-                          "format": "date-time",
-                          "example": "2026-02-16T00:00:00.000000Z"
-                        },
-                        "updated_at": {
-                          "type": "string",
-                          "format": "date-time",
-                          "example": "2026-02-16T00:00:00.000000Z"
-                        }
-                      },
-                      "type": "object"
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthenticated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Unauthenticated."
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "The given data was invalid"
-                    },
-                    "errors": {
-                      "type": "object",
-                      "example": {
-                        "title": [
-                          "The title field is required."
-                        ],
-                        "event_date": [
-                          "The event date must be a date after now."
-                        ]
-                      }
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Failed to create event"
-                    },
-                    "error": {
-                      "type": "object"
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      }
-    },
-    "/api/events/{id}": {
-      "get": {
-        "tags": [
-          "Events"
-        ],
-        "summary": "Get event details",
-        "description": "Retrieve detailed information about a specific event including its participants",
-        "operationId": "071a22eb71feeaf1334d44461b39f767",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Event ID",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "example": "123e4567-e89b-12d3-a456-426614174000"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Event retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Event retrieved successfully"
-                    },
-                    "data": {
-                      "properties": {
-                        "id": {
-                          "type": "string",
-                          "format": "uuid",
-                          "example": "123e4567-e89b-12d3-a456-426614174000"
-                        },
-                        "title": {
-                          "type": "string",
-                          "example": "Community Cleanup Event"
-                        },
-                        "description": {
-                          "type": "string",
-                          "example": "Join us for a community cleanup event"
-                        },
-                        "event_date": {
-                          "type": "string",
-                          "format": "date-time",
-                          "example": "2026-03-15T10:00:00.000000Z"
-                        },
-                        "created_at": {
-                          "type": "string",
-                          "format": "date-time",
-                          "example": "2026-02-16T00:00:00.000000Z"
-                        },
-                        "updated_at": {
-                          "type": "string",
-                          "format": "date-time",
-                          "example": "2026-02-16T00:00:00.000000Z"
-                        },
-                        "users": {
-                          "type": "array",
-                          "items": {
-                            "properties": {
-                              "id": {
-                                "type": "string",
-                                "example": "9d4e8f12-3456-7890-abcd-ef1234567890"
-                              },
-                              "name": {
-                                "type": "string",
-                                "example": "John Doe"
-                              },
-                              "email": {
-                                "type": "string",
-                                "example": "john@example.com"
-                              },
-                              "pivot": {
-                                "properties": {
-                                  "event_id": {
-                                    "type": "string",
-                                    "format": "uuid",
-                                    "example": "123e4567-e89b-12d3-a456-426614174000"
-                                  },
-                                  "user_id": {
-                                    "type": "string",
-                                    "example": "9d4e8f12-3456-7890-abcd-ef1234567890"
-                                  },
-                                  "created_at": {
-                                    "type": "string",
-                                    "format": "date-time"
-                                  },
-                                  "updated_at": {
-                                    "type": "string",
-                                    "format": "date-time"
-                                  }
                                 },
                                 "type": "object"
-                              }
-                            },
-                            "type": "object"
-                          }
+                            }
                         }
-                      },
-                      "type": "object"
                     }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthenticated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Unauthenticated."
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Event not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Event not found"
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
+                },
+                "responses": {
+                    "201": {
+                        "description": "Registration successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Registrasi berhasil"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "token": {
+                                                    "type": "string",
+                                                    "example": "1|abcdef123456..."
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
-                    "message": {
-                      "type": "string",
-                      "example": "Failed to retrieve event"
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation failed"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
-                    "error": {
-                      "type": "object"
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Registrasi gagal"
+                                        },
+                                        "error": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
-                  },
-                  "type": "object"
                 }
-              }
             }
-          }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      }
-    },
-    "/api/events/{id}/join": {
-      "post": {
-        "tags": [
-          "Events"
-        ],
-        "summary": "Join an event",
-        "description": "Authenticated user joins a specific event",
-        "operationId": "98b679b70f3d85fb82bba6b002c7250a",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Event ID",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "example": "123e4567-e89b-12d3-a456-426614174000"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully joined the event",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Successfully joined the event"
-                    },
-                    "data": {
-                      "type": "null"
+        "/api/login": {
+            "post": {
+                "tags": ["Authentication"],
+                "summary": "User login",
+                "description": "Authenticate user and return access token",
+                "operationId": "594ca3d408ad3621f1036811e302169d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": ["email", "password"],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "minLength": 8,
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
                     }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Already joined",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Login berhasil"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "token": {
+                                                    "type": "string",
+                                                    "example": "1|abcdef123456..."
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
-                    "message": {
-                      "type": "string",
-                      "example": "You have already joined this event"
+                    "401": {
+                        "description": "Invalid credentials",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Kredensial yang diberikan tidak sesuai dengan catatan kami"
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Kredensial tidak valid"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
-                    "error": {
-                      "type": "string",
-                      "example": "Duplicate entry"
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Login gagal"
+                                        },
+                                        "error": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
-                  },
-                  "type": "object"
                 }
-              }
             }
-          },
-          "401": {
-            "description": "Unauthenticated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Unauthenticated."
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Event not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Event not found"
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Failed to join event"
-                    },
-                    "error": {
-                      "type": "object"
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            }
-          }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      }
-    }
-  },
-  "components": {
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "bearerFormat": "JWT",
-        "scheme": "bearer"
-      }
-    }
-  },
-  "tags": [
-    {
-      "name": "Authentication",
-      "description": "Authentication"
+        "/api/logout": {
+            "post": {
+                "tags": ["Authentication"],
+                "summary": "User logout",
+                "description": "Logout user and revoke all tokens",
+                "operationId": "b04b4574154805526c00bfa85af76337",
+                "responses": {
+                    "200": {
+                        "description": "Logout successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Logout berhasil"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Logout gagal"
+                                        },
+                                        "error": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/me": {
+            "get": {
+                "tags": ["Authentication"],
+                "summary": "Get authenticated user profile",
+                "description": "Retrieve the profile of the authenticated user",
+                "operationId": "51491a6db5ac142d7476ebeb3c8abe80",
+                "responses": {
+                    "200": {
+                        "description": "User profile retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "John Doe"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "john.doe@example.com"
+                                        },
+                                        "email_verified_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-01-01T00:00:00.000000Z",
+                                            "nullable": true
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-01-01T00:00:00.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-01-01T00:00:00.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/events": {
+            "get": {
+                "tags": ["Events"],
+                "summary": "Get all events",
+                "description": "Retrieve a paginated list of all events with their participants",
+                "operationId": "36f737e1d90d458b5e9594583378ed58",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10,
+                            "example": 10
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Events retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Events retrieved successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string",
+                                                                "example": "123e4567-e89b-12d3-a456-426614174000"
+                                                            },
+                                                            "title": {
+                                                                "type": "string",
+                                                                "example": "Community Cleanup Event"
+                                                            },
+                                                            "description": {
+                                                                "type": "string",
+                                                                "example": "Join us for a community cleanup event"
+                                                            },
+                                                            "event_date": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "example": "2026-03-15T10:00:00.000000Z"
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "example": "2026-02-16T00:00:00.000000Z"
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "example": "2026-02-16T00:00:00.000000Z"
+                                                            },
+                                                            "users": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "properties": {
+                                                                        "id": {
+                                                                            "type": "string",
+                                                                            "example": "9d4e8f12-3456-7890-abcd-ef1234567890"
+                                                                        },
+                                                                        "name": {
+                                                                            "type": "string",
+                                                                            "example": "John Doe"
+                                                                        },
+                                                                        "email": {
+                                                                            "type": "string",
+                                                                            "example": "john@example.com"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                }
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "first_page_url": {
+                                                    "type": "string",
+                                                    "example": "http://localhost:8000/api/events?page=1"
+                                                },
+                                                "from": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "to": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 100
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Failed to retrieve events"
+                                        },
+                                        "error": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": ["Events"],
+                "summary": "Create a new event",
+                "description": "Create a new event with title, description, and event date",
+                "operationId": "d31f001e93af9a511c02cbf217121d54",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "description",
+                                    "event_date"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Community Cleanup Event"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Join us for a community cleanup event to make our neighborhood cleaner and greener"
+                                    },
+                                    "event_date": {
+                                        "description": "Event date must be in the future",
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2026-03-15T10:00:00"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Event created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Event created successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "format": "uuid",
+                                                    "example": "123e4567-e89b-12d3-a456-426614174000"
+                                                },
+                                                "title": {
+                                                    "type": "string",
+                                                    "example": "Community Cleanup Event"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Join us for a community cleanup event"
+                                                },
+                                                "event_date": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2026-03-15T10:00:00.000000Z"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2026-02-16T00:00:00.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2026-02-16T00:00:00.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "title": [
+                                                    "The title field is required."
+                                                ],
+                                                "event_date": [
+                                                    "The event date must be a date after now."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Failed to create event"
+                                        },
+                                        "error": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/events/{id}": {
+            "get": {
+                "tags": ["Events"],
+                "summary": "Get event details",
+                "description": "Retrieve detailed information about a specific event including its participants",
+                "operationId": "071a22eb71feeaf1334d44461b39f767",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Event ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "example": "123e4567-e89b-12d3-a456-426614174000"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Event retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Event retrieved successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "format": "uuid",
+                                                    "example": "123e4567-e89b-12d3-a456-426614174000"
+                                                },
+                                                "title": {
+                                                    "type": "string",
+                                                    "example": "Community Cleanup Event"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Join us for a community cleanup event"
+                                                },
+                                                "event_date": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2026-03-15T10:00:00.000000Z"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2026-02-16T00:00:00.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2026-02-16T00:00:00.000000Z"
+                                                },
+                                                "users": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string",
+                                                                "example": "9d4e8f12-3456-7890-abcd-ef1234567890"
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "John Doe"
+                                                            },
+                                                            "email": {
+                                                                "type": "string",
+                                                                "example": "john@example.com"
+                                                            },
+                                                            "pivot": {
+                                                                "properties": {
+                                                                    "event_id": {
+                                                                        "type": "string",
+                                                                        "format": "uuid",
+                                                                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                                                                    },
+                                                                    "user_id": {
+                                                                        "type": "string",
+                                                                        "example": "9d4e8f12-3456-7890-abcd-ef1234567890"
+                                                                    },
+                                                                    "created_at": {
+                                                                        "type": "string",
+                                                                        "format": "date-time"
+                                                                    },
+                                                                    "updated_at": {
+                                                                        "type": "string",
+                                                                        "format": "date-time"
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Event not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Event not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Failed to retrieve event"
+                                        },
+                                        "error": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/events/{id}/join": {
+            "post": {
+                "tags": ["Events"],
+                "summary": "Join an event",
+                "description": "Authenticated user joins a specific event",
+                "operationId": "98b679b70f3d85fb82bba6b002c7250a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Event ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "example": "123e4567-e89b-12d3-a456-426614174000"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully joined the event",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Successfully joined the event"
+                                        },
+                                        "data": {
+                                            "type": "null"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Already joined",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "You have already joined this event"
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Duplicate entry"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Event not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Event not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Failed to join event"
+                                        },
+                                        "error": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
     },
-    {
-      "name": "Events",
-      "description": "Events"
-    }
-  ]
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Authentication",
+            "description": "Authentication"
+        },
+        {
+            "name": "Events",
+            "description": "Events"
+        }
+    ]
 }
