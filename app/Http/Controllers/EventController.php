@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreEventRequest;
-use App\Http\Requests\UpdateEventRequest;
+use App\Http\Resources\EventResource;
 use App\Models\Event;
 use Illuminate\Http\Request;
 
@@ -19,7 +19,7 @@ class EventController extends Controller
             $events = Event::with('users')->paginate($perPage);
             
             return $this->success(
-                data: $events,
+                data: EventResource::collection($events)->response()->getData(true),
                 success: true,
                 code: 200,
                 message: 'Events retrieved successfully'
@@ -39,13 +39,22 @@ class EventController extends Controller
     public function store(StoreEventRequest $request)
     {
         try {
+            // Authorize the create action
+            $this->authorize('create', Event::class);
+            
             $event = Event::create($request->validated());
             
             return $this->created(
-                data: $event,
+                data: new EventResource($event),
                 success: true,
                 code: 201,
                 message: 'Event created successfully'
+            );
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            return $this->error(
+                message: 'Unauthorized to create event',
+                error: ['error' => $e->getMessage()],
+                code: 403
             );
         } catch (\Exception $e) {
             return $this->error(
@@ -65,7 +74,7 @@ class EventController extends Controller
             $event->load('users');
             
             return $this->success(
-                data: $event,
+                data: new EventResource($event),
                 success: true,
                 code: 200,
                 message: 'Event retrieved successfully'
@@ -87,15 +96,8 @@ class EventController extends Controller
         try {
             $user = $request->user();
             
-            // Check if user already joined
-            if ($event->users()->where('user_id', $user->id)->exists()) {
-                return $this->error(
-                    message: 'You have already joined this event',
-                    success: false,
-                    code: 400,
-                    error: 'Duplicate entry'
-                );
-            }
+            // Authorize the join action
+            $this->authorize('join', $event);
             
             // Attach user to event
             $event->users()->attach($user->id);
@@ -105,6 +107,12 @@ class EventController extends Controller
                 success: true,
                 code: 200,
                 message: 'Successfully joined the event'
+            );
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            return $this->error(
+                message: 'You have already joined this event',
+                error: ['error' => $e->getMessage()],
+                code: 403
             );
         } catch (\Exception $e) {
             return $this->error(

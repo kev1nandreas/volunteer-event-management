@@ -13,7 +13,7 @@ class EventPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true; // Anyone can view events (public)
     }
 
     /**
@@ -21,7 +21,7 @@ class EventPolicy
      */
     public function view(User $user, Event $event): bool
     {
-        return false;
+        return true; // Anyone can view an event (public)
     }
 
     /**
@@ -29,7 +29,7 @@ class EventPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return true; // All authenticated users can create events
     }
 
     /**
@@ -46,6 +46,14 @@ class EventPolicy
     public function delete(User $user, Event $event): bool
     {
         return false;
+    }
+
+    /**
+     * Determine whether the user can join the event.
+     */
+    public function join(User $user, Event $event): bool
+    {
+        return !$event->users()->where('user_id', $user->id)->exists();
     }
 
     /**

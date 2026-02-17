@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,7 +29,10 @@ class AuthController extends Controller
             $token = $user->createToken('auth_token')->plainTextToken;
 
             return $this->success(
-                data: ['token' => $token],
+                data: [
+                    'token' => $token,
+                    'user' => new UserResource($user),
+                ],
                 success: true,
                 code: 200,
                 message: 'Login berhasil'
@@ -69,7 +73,10 @@ class AuthController extends Controller
             $token = $user->createToken('auth_token')->plainTextToken;
 
             return $this->created(
-                data: ['token' => $token],
+                data: [
+                    'token' => $token,
+                    'user' => new UserResource($user),
+                ],
                 success: true,
                 code: 201,
                 message: 'Registrasi berhasil'
@@ -89,7 +96,7 @@ class AuthController extends Controller
             $user = Auth::user();
 
             return $this->success(
-                data: ['user' => $user],
+                data: new UserResource($user),
                 success: true,
                 code: 200,
                 message: 'Profil pengguna berhasil diambil'
@@ -101,5 +108,5 @@ class AuthController extends Controller
                 code: 500
             );
         }
-}
+    }
 }
